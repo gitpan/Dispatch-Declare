@@ -1,0 +1,20 @@
+---
+name: Dispatch-Declare
+version: v0.0.2
+author:
+  - 'Robert Boone <robert@rlb3.com>'
+abstract: '[Build a hash based dispatch table declaratively]'
+license: perl
+resources:
+  license: http://dev.perl.org/licenses/
+requires:
+  Test::More: 0
+  version: 0
+provides:
+  Dispatch::Declare:
+    file: lib/Dispatch/Declare.pm
+    version: v0.0.2
+generated_by: Module::Build version 0.2806
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.2.html
+  version: 1.2
