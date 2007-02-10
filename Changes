@@ -1,5 +1,7 @@
 Revision history for Dispatch-Declare
 
-0.0.1  Fri Feb  9 14:45:17 2007
+0.0.2  Fri Feb  9 14:45:17 2007
        Initial release.
 
+0.0.3  Fri Feb  9 21:05:30 2007
+       Added undeclare sub.

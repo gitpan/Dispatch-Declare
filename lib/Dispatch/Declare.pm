@@ -4,12 +4,13 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.2');
+use version; our $VERSION = qv('0.0.3');
 
 sub import {
     no strict 'refs';
-    *{ caller() . '::declare'    } = \&declare;
-    *{ caller() . '::run'        } = \&run;
+    *{ caller() . '::declare'   } = \&declare;
+    *{ caller() . '::undeclare' } = \&undeclare;
+    *{ caller() . '::run'       } = \&run;
 }
 
 my $stash = {};
@@ -19,6 +20,12 @@ sub declare($&) {
     my $code = shift;
 
     $stash->{ uc $key } = $code;
+}
+
+sub undeclare($) {
+    my $key  = shift;
+
+    delete $stash->{ uc $key } if exists $stash->{$key};
 }
 
 sub run {
@@ -33,12 +40,12 @@ __END__
 
 =head1 NAME
 
-Dispatch::Declare - [Build a hash based dispatch table declaratively]
+Dispatch::Declare - Build a hash based dispatch table declaratively
 
 
 =head1 VERSION
 
-This document describes Dispatch::Declare version 0.0.2
+This document describes Dispatch::Declare version 0.0.3
 
 
 =head1 SYNOPSIS
@@ -83,6 +90,12 @@ This document describes Dispatch::Declare version 0.0.2
         ...
     }
 
+=item undeclare
+
+   undeclare 'KEY1';
+
+   Now KEY1 have been remove from the table.
+
 =item run
 
     Then to call your action:
@@ -104,7 +117,9 @@ None reported.
 
 
 =head1 BUGS AND LIMITATIONS
-The value part of the declare must be a code ref.
+1. The value part of the declare must be a code ref.
+2. Only one dispatch table can be used.
+
 No bugs have been reported.
 
 Please report any bugs or feature requests to
@@ -114,12 +129,12 @@ L<http://rt.cpan.org>.
 
 =head1 AUTHOR
 
-Robert Boone  C<< <robert@rlb3.com> >>
+Robert Boone  C<< <rlb@cpan.org> >>
 
 
 =head1 LICENCE AND COPYRIGHT
 
-Copyright (c) 2007, Robert Boone C<< <robert@rlb3.net> >>. All rights reserved.
+Copyright (c) 2007, Robert Boone C<< <rlb@cpan.org> >>. All rights reserved.
 
 This module is free software; you can redistribute it and/or
 modify it under the same terms as Perl itself. See L<perlartistic>.
@@ -147,3 +162,4 @@ RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A
 FAILURE OF THE SOFTWARE TO OPERATE WITH ANY OTHER SOFTWARE), EVEN IF
 SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGES.
+

@@ -14,7 +14,12 @@ declare TEST2 => sub {
     return 'TWO'
 };
 
+undeclare 'TEST1';
+
 my $result = run $action;
 
-is $result, 'ONE', 'Correct action result';
-isnt $result, 'TWO', 'Incorrect action result not sent';
+ok !$result,'The action has been removed';
+
+my $result2 = run 'TEST2';
+
+is $result2, 'TWO', 'I can still get other actions';

@@ -5,7 +5,7 @@ use Module::Build;
 my $builder = Module::Build->new(
     module_name         => 'Dispatch::Declare',
     license             => 'perl',
-    dist_author         => 'Robert Boone <robert@rlb3.com>',
+    dist_author         => 'Robert Boone <rlb@cpan.org>',
     dist_version_from   => 'lib/Dispatch/Declare.pm',
     requires => {
         'Test::More' => 0,

@@ -4,7 +4,7 @@ use ExtUtils::MakeMaker;
 
 WriteMakefile(
     NAME                => 'Dispatch::Declare',
-    AUTHOR              => 'Robert Boone <robert@rlb3.com>',
+    AUTHOR              => 'Robert Boone <rlb@cpan.org>',
     VERSION_FROM        => 'lib/Dispatch/Declare.pm',
     ABSTRACT_FROM       => 'lib/Dispatch/Declare.pm',
     PL_FILES            => {},
