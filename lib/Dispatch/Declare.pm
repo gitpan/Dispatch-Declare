@@ -4,7 +4,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.3');
+use version; our $VERSION = qv('0.0.4');
 
 sub import {
     no strict 'refs';
@@ -25,12 +25,17 @@ sub declare($&) {
 sub undeclare($) {
     my $key  = shift;
 
-    delete $stash->{ uc $key } if exists $stash->{$key};
+    delete $stash->{ uc $key } if exists $stash->{uc $key};
 }
 
 sub run {
     my $key = shift;
-    return $stash->{$key}->() if exists $stash->{$key};
+    if (exists $stash->{uc $key}) {
+        return $stash->{uc $key}->();
+    }
+    elsif (exists $stash->{'DEFAULT'}) {
+        $stash->{'DEFAULT'}->();
+    }
 }
 
 
@@ -104,8 +109,10 @@ This document describes Dispatch::Declare version 0.0.3
     
     That all there is to it.
 
-=back
+=item DEFAULT key
+    If you make one of your keys DEFAULT it will be executed if no other keys match.
 
+=back
 
 =head1 CONFIGURATION AND ENVIRONMENT
   

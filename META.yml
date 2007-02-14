@@ -1,6 +1,6 @@
 ---
 name: Dispatch-Declare
-version: v0.0.3
+version: v0.0.4
 author:
   - 'Robert Boone <rlb@cpan.org>'
 abstract: Build a hash based dispatch table declaratively
@@ -13,7 +13,7 @@ requires:
 provides:
   Dispatch::Declare:
     file: lib/Dispatch/Declare.pm
-    version: v0.0.3
+    version: v0.0.4
 generated_by: Module::Build version 0.2806
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.2.html
