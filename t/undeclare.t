@@ -6,7 +6,7 @@ BEGIN {
 
 my $action = 'TEST1';
 
-declare TEST1 => sub {
+declare_once TEST1 => sub {
     return 'ONE'
 };
 

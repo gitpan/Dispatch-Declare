@@ -4,16 +4,20 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.4');
+use version; our $VERSION = qv('0.0.5');
 
 sub import {
     no strict 'refs';
-    *{ caller() . '::declare'   } = \&declare;
-    *{ caller() . '::undeclare' } = \&undeclare;
-    *{ caller() . '::run'       } = \&run;
+    *{ caller() . '::declare' }      = \&declare;
+    *{ caller() . '::declare_once' } = \&declare;
+    *{ caller() . '::undeclare' }    = \&undeclare;
+    *{ caller() . '::run' }          = \&run;
+    *{ caller() . '::dispatch' }     = \&dispatch;
+
 }
 
 my $stash = {};
+my $once  = {};
 
 sub declare($&) {
     my $key  = shift;
@@ -23,24 +27,36 @@ sub declare($&) {
 }
 
 sub undeclare($) {
-    my $key  = shift;
+    my $key = shift;
 
-    delete $stash->{ uc $key } if exists $stash->{uc $key};
+    delete $stash->{ uc $key } if exists $stash->{ uc $key };
+}
+
+sub declare_once($&) {
+    my $key  = shift;
+    my $code = shift;
+
+    carp('Cannot modify declare_once field') && return
+      if exists $once->{ uc $key };
+    declare $key => sub { $code };
+    $once->{ uc $key }++;
+
+    return 1;
 }
 
 sub run {
     my $key = shift;
-    if (exists $stash->{uc $key}) {
-        return $stash->{uc $key}->();
+    if ( exists $stash->{ uc $key } ) {
+        return $stash->{ uc $key }->();
     }
-    elsif (exists $stash->{'DEFAULT'}) {
-        $stash->{'DEFAULT'}->();
+    elsif ( exists $stash->{'DEFAULT'} ) {
+        return $stash->{'DEFAULT'}->();
     }
 }
 
+*dispatch = *run;
 
-
-1; # Magic true value required at end of module
+1;    # Magic true value required at end of module
 __END__
 
 =head1 NAME
@@ -50,7 +66,7 @@ Dispatch::Declare - Build a hash based dispatch table declaratively
 
 =head1 VERSION
 
-This document describes Dispatch::Declare version 0.0.3
+This document describes Dispatch::Declare version 0.0.5
 
 
 =head1 SYNOPSIS
@@ -95,13 +111,25 @@ This document describes Dispatch::Declare version 0.0.3
         ...
     }
 
+=item declare_once
+
+    Only allow a key to be set once.
+
+    declare KEY1 => sub { # Set KEY1
+        ...
+    }
+    
+    declare KEY1 => sub { # Error
+        ...
+    }
+
 =item undeclare
 
    undeclare 'KEY1';
 
    Now KEY1 have been remove from the table.
 
-=item run
+=item run/dispatch
 
     Then to call your action:
     my $key = 'KEY1';
@@ -124,6 +152,7 @@ None reported.
 
 
 =head1 BUGS AND LIMITATIONS
+
 1. The value part of the declare must be a code ref.
 2. Only one dispatch table can be used.
 
