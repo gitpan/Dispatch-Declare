@@ -4,7 +4,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.5');
+use version; our $VERSION = qv('0.0.6');
 
 sub import {
     no strict 'refs';
@@ -90,7 +90,7 @@ This document describes Dispatch::Declare version 0.0.5
 
     Large if-else statement can be trouble. Or as the PBP calls them cascading ifs. I also
     find that large hash/dispatch tables can lead to trouble too. If you make a syntax error the line given
-    could be at the end of the control structure. I thoguht most of the problems could be solved with
+    could be at the end of the control structure. I thought most of the problems could be solved with
     a little syntax.
 
 
@@ -115,11 +115,11 @@ This document describes Dispatch::Declare version 0.0.5
 
     Only allow a key to be set once.
 
-    declare KEY1 => sub { # Set KEY1
+    declare_once KEY1 => sub { # Set KEY1
         ...
     }
     
-    declare KEY1 => sub { # Error
+    declare_once KEY1 => sub { # Error
         ...
     }
 
@@ -129,7 +129,7 @@ This document describes Dispatch::Declare version 0.0.5
 
    Now KEY1 have been remove from the table.
 
-=item run/dispatch
+=item run
 
     Then to call your action:
     my $key = 'KEY1';
@@ -140,6 +140,12 @@ This document describes Dispatch::Declare version 0.0.5
 =item DEFAULT key
     If you make one of your keys DEFAULT it will be executed if no other keys match.
 
+    declare DEFAULT => sub {
+        ...
+    };
+
+    run; # runs DEFAULT action
+
 =back
 
 =head1 CONFIGURATION AND ENVIRONMENT
@@ -149,7 +155,6 @@ Dispatch::Declare requires no configuration files or environment variables.
 =head1 INCOMPATIBILITIES
 
 None reported.
-
 
 =head1 BUGS AND LIMITATIONS
 
