@@ -4,7 +4,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.7');
+use version; our $VERSION = qv('0.0.8');
 
 sub import {
     no strict 'refs';
@@ -65,7 +65,7 @@ Dispatch::Declare - Build a hash based dispatch table declaratively
 
 =head1 VERSION
 
-This document describes Dispatch::Declare version 0.0.5
+This document describes Dispatch::Declare version 0.0.8
 
 
 =head1 SYNOPSIS
