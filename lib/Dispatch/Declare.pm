@@ -4,7 +4,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.8');
+use version; our $VERSION = qv('0.0.9');
 
 sub import {
     no strict 'refs';
@@ -22,6 +22,9 @@ sub declare($&) {
     my $key  = shift;
     my $code = shift;
 
+    carp('Cannot modify declare_once field') && return
+      if exists $once->{ uc $key };
+      
     $stash->{ uc $key } = $code;
 }
 
@@ -65,7 +68,7 @@ Dispatch::Declare - Build a hash based dispatch table declaratively
 
 =head1 VERSION
 
-This document describes Dispatch::Declare version 0.0.8
+This document describes Dispatch::Declare version 0.0.9
 
 
 =head1 SYNOPSIS
@@ -87,10 +90,10 @@ This document describes Dispatch::Declare version 0.0.8
   
 =head1 DESCRIPTION
 
-    Large if-else statement can be trouble. Or as the PBP calls them cascading ifs. I also
-    find that large hash/dispatch tables can lead to trouble too. If you make a syntax error the line given
-    could be at the end of the control structure. I thought most of the problems could be solved with
-    a little syntax.
+Large if-else statement can be trouble or as the PBP calls them cascading ifs. I also
+find that large hash/dispatch tables can lead to trouble too. If you make a syntax error the line given
+could be at the end of the control structure. I thought most of the problems could be solved with
+a little syntax.
 
 
 =head1 INTERFACE 
@@ -121,18 +124,22 @@ This document describes Dispatch::Declare version 0.0.8
     declare_once KEY1 => sub { # Error
         ...
     };
+    
+    declare KEY1 => sub { # Error
+        ...
+    };
 
 =item undeclare
 
    undeclare 'KEY1';
 
-   Now KEY1 have been remove from the table.
+   Now KEY1 has been remove from the table.
 
 =item run
 
     Then to call your action:
     my $key = 'KEY1';
-    run $key
+    run $key, @args;
     
     That all there is to it.
 
