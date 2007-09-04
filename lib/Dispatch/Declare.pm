@@ -4,7 +4,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.6');
+use version; our $VERSION = qv('0.0.7');
 
 sub import {
     no strict 'refs';
@@ -13,7 +13,6 @@ sub import {
     *{ caller() . '::undeclare' }    = \&undeclare;
     *{ caller() . '::run' }          = \&run;
     *{ caller() . '::dispatch' }     = \&dispatch;
-
 }
 
 my $stash = {};
@@ -47,10 +46,10 @@ sub declare_once($&) {
 sub run {
     my $key = shift;
     if ( exists $stash->{ uc $key } ) {
-        return $stash->{ uc $key }->();
+        return $stash->{ uc $key }->(@_);
     }
     elsif ( exists $stash->{'DEFAULT'} ) {
-        return $stash->{'DEFAULT'}->();
+        return $stash->{'DEFAULT'}->(@_);
     }
 }
 
@@ -105,11 +104,11 @@ This document describes Dispatch::Declare version 0.0.5
 
     declare KEY1 => sub {
         ...
-    }
+    };
     
     declare KEY2 => sub {
         ...
-    }
+    };
 
 =item declare_once
 
@@ -117,11 +116,11 @@ This document describes Dispatch::Declare version 0.0.5
 
     declare_once KEY1 => sub { # Set KEY1
         ...
-    }
+    };
     
     declare_once KEY1 => sub { # Error
         ...
-    }
+    };
 
 =item undeclare
 

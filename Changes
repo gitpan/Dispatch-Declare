@@ -1,12 +1,20 @@
 Revision history for Dispatch-Declare
 
-0.0.2  Fri Feb  9 14:45:17 2007
-       Initial release.
+0.0.7  Tues Sept 4 2007
+       From an anonymous contributor:
+       Allow run to accept arguments
 
-0.0.3  Fri Feb  9 21:05:30 2007
-       Added undeclare sub.
-
-0.0.4  Wed Feb 14 12:07:05 2007
+0.0.4  Wed Feb 14 2007
        From the suggestions of Dan Muey:
        Apply uc to the key in the run sub.
        Add the possiblity of a default action.
+
+0.0.3  Fri Feb  9 2007
+       Added undeclare sub.
+
+0.0.2  Fri Feb  9 2007
+       Initial release.
+
+
+
+
