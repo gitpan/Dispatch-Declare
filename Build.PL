@@ -1,17 +1,3 @@
-use strict;
-use warnings;
-use Module::Build;
-
-my $builder = Module::Build->new(
-    module_name         => 'Dispatch::Declare',
-    license             => 'perl',
-    dist_author         => 'Robert Boone <rlb@cpan.org>',
-    dist_version_from   => 'lib/Dispatch/Declare.pm',
-    requires => {
-        'Test::More' => 0,
-        'version'    => 0,
-    },
-    add_to_cleanup      => [ 'Dispatch-Declare-*' ],
-);
-
-$builder->create_build_script();
+# Dear Distribution Packager. This use of require is intentional. 
+# Module::Install detects Build.PL usage and acts accordingly.
+require 'Makefile.PL';

@@ -4,7 +4,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.0.9');
+use version; our $VERSION = qv('0.1.0');
 
 sub import {
     no strict 'refs';
@@ -24,7 +24,7 @@ sub declare($&) {
 
     carp('Cannot modify declare_once field') && return
       if exists $once->{ uc $key };
-      
+
     $stash->{ uc $key } = $code;
 }
 
@@ -68,7 +68,7 @@ Dispatch::Declare - Build a hash based dispatch table declaratively
 
 =head1 VERSION
 
-This document describes Dispatch::Declare version 0.0.9
+This document describes Dispatch::Declare version 0.1.0
 
 
 =head1 SYNOPSIS
@@ -121,7 +121,7 @@ a little syntax.
         ...
     };
     
-    declare_once KEY1 => sub { # Error
+    declare KEY1 => sub { # Error
         ...
     };
     
@@ -153,6 +153,10 @@ a little syntax.
     run; # runs DEFAULT action
 
 =back
+
+=head1 GIT REPOSITORY
+
+http://www.rlb3.com/Dispatch-Declare.git
 
 =head1 CONFIGURATION AND ENVIRONMENT
   
