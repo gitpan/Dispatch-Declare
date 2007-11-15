@@ -4,7 +4,7 @@ use warnings;
 use strict;
 use Carp;
 
-use version; our $VERSION = qv('0.1.0');
+our $VERSION = '0.1.1';
 
 sub import {
     no strict 'refs';
@@ -68,7 +68,7 @@ Dispatch::Declare - Build a hash based dispatch table declaratively
 
 =head1 VERSION
 
-This document describes Dispatch::Declare version 0.1.0
+This document describes Dispatch::Declare version 0.1.1
 
 
 =head1 SYNOPSIS
@@ -157,6 +157,7 @@ a little syntax.
 =head1 GIT REPOSITORY
 
 http://www.rlb3.com/Dispatch-Declare.git
+http://www.rlb3.com/cgi-bin/gitweb.cgi?p=Dispatch-Declare.git;a=summary
 
 =head1 CONFIGURATION AND ENVIRONMENT
   

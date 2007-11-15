@@ -1,5 +1,9 @@
 Revision history for Dispatch-Declare
 
+0.1.1  Wed Nov 14 2007
+       Add Dispatch::Declare::Attr
+       Remove version.pm dependency
+
 0.1.0  Tues Sept 4 2007
        Port to Module::Install
        Add link to git repository
