@@ -1,49 +1,24 @@
-package Dispatch::Declare;
+package Dispatch::Declare::Attr;
 
-use warnings;
 use strict;
-use Carp;
+use warnings;
+
+use Attribute::Handlers;
 
 our $VERSION = '0.1.2';
 
+my $stash = {};
+my $once  = [];
+
 sub import {
     no strict 'refs';
-    *{ caller() . '::declare' }      = \&declare;
-    *{ caller() . '::declare_once' } = \&declare;
-    *{ caller() . '::undeclare' }    = \&undeclare;
-    *{ caller() . '::run' }          = \&run;
-    *{ caller() . '::dispatch' }     = \&dispatch;
+    *{ caller() . '::run' } = \&run;
 }
 
-my $stash = {};
-my $once  = {};
-
-sub declare($&) {
-    my $key  = shift;
-    my $code = shift;
-
-    carp('Cannot modify declare_once field') && return
-      if exists $once->{ uc $key };
-
-    $stash->{ uc $key } = $code;
-}
-
-sub undeclare($) {
-    my $key = shift;
-
-    delete $stash->{ uc $key } if exists $stash->{ uc $key };
-}
-
-sub declare_once($&) {
-    my $key  = shift;
-    my $code = shift;
-
-    carp('Cannot modify declare_once field') && return
-      if exists $once->{ uc $key };
-    declare $key => sub { $code };
-    $once->{ uc $key }++;
-
-    return 1;
+sub UNIVERSAL::Dispatch : ATTR(CODE) {
+    my ( $package, $symbol, $referent, $attr, $data, $phase ) = @_;
+    my $name = $data || *$symbol{NAME};
+    $stash->{ uc $name } = $referent;
 }
 
 sub run {
@@ -56,108 +31,54 @@ sub run {
     }
 }
 
-*dispatch = *run;
+1;
 
-1;    # Magic true value required at end of module
 __END__
 
 =head1 NAME
 
-Dispatch::Declare - Build a hash based dispatch table declaratively
+Dispatch::Declare::Attr - Build a hash based dispatch table with Attributes
 
 
 =head1 VERSION
 
 This document describes Dispatch::Declare version 0.1.1
 
-
 =head1 SYNOPSIS
 
-    use Dispatch::Declare;
+    use Dispatch::Declare::Attr;
 
-    my $action = 'ADDUSER';
-
-    declare REPAIRDB => sub {
-        print 'This is a REPAIRDB test' . "\n";
-    };
-
-    declare ADDUSER => sub {
-        print 'This is a ADDUSER test' . "\n";
-    };
+    my $action = 'ADD';
 
     run $action;
-  
-  
+
+    sub repairdb : Dispatch {
+        print 'This is a REPAIRDB test' . "\n";
+    }
+
+    sub adduser : Dispatch('ADD') {
+        print 'This is a ADDUSER test' . "\n";
+    }
+
 =head1 DESCRIPTION
 
-Large if-else statement can be trouble or as the PBP calls them cascading ifs. I also
-find that large hash/dispatch tables can lead to trouble too. If you make a syntax error the line given
-could be at the end of the control structure. I thought most of the problems could be solved with
-a little syntax.
-
-
-=head1 INTERFACE 
-
-    There are only two subroutines exported, declare and run.
-    declare is where you setup you dispatch table.
+    This is another variation on the dispatch table that uses attributes.
+    
+=head1 Attribute
 
 =over 4
 
-=item declare
+=item Dispatch | Dispatch('name')
 
-    declare KEY1 => sub {
-        ...
-    };
+    sub repairdb : Dispatch { ... }
     
-    declare KEY2 => sub {
-        ...
-    };
-
-=item declare_once
-
-    Only allow a key to be set once.
-
-    declare_once KEY1 => sub { # Set KEY1
-        ...
-    };
-    
-    declare KEY1 => sub { # Error
-        ...
-    };
-    
-    declare KEY1 => sub { # Error
-        ...
-    };
-
-=item undeclare
-
-   undeclare 'KEY1';
-
-   Now KEY1 has been remove from the table.
-
-=item run
-
-    Then to call your action:
-    my $key = 'KEY1';
-    run $key, @args;
-    
-    That all there is to it.
-
-=item DEFAULT key
-    If you make one of your keys DEFAULT it will be executed if no other keys match.
-
-    declare DEFAULT => sub {
-        ...
-    };
-
-    run; # runs DEFAULT action
+    sub adduser : Dispatch('ADD') { ... }
 
 =back
 
 =head1 GIT REPOSITORY
 
 http://www.rlb3.com/Dispatch-Declare.git
-http://www.rlb3.com/cgi-bin/gitweb.cgi?p=Dispatch-Declare.git;a=summary
 
 =head1 CONFIGURATION AND ENVIRONMENT
   
@@ -215,3 +136,6 @@ FAILURE OF THE SOFTWARE TO OPERATE WITH ANY OTHER SOFTWARE), EVEN IF
 SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGES.
 
+
+    
+    

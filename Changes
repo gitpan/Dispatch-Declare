@@ -1,5 +1,8 @@
 Revision history for Dispatch-Declare
 
+0.1.2  Wed Nov 14 2007
+       Missing Dispatch::Declare::Attr
+
 0.1.1  Wed Nov 14 2007
        Add Dispatch::Declare::Attr
        Remove version.pm dependency
@@ -22,7 +25,7 @@ Revision history for Dispatch-Declare
 0.0.4  Wed Feb 14 2007
        From the suggestions of Dan Muey:
        Apply uc to the key in the run sub.
-       Add the possiblity of a default action.
+       Add the possibility of a default action.
 
 0.0.3  Fri Feb  9 2007
        Added undeclare sub.
